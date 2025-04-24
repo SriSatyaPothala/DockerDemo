@@ -16,4 +16,4 @@ Since the app only needs to serve basic details and static content and doesn't r
 
 ## Getting Started
 - Clone the Repo
-- cd DOCKER-DEMO-PROJECT
+- cd DockerDemo
