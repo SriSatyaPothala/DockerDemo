@@ -19,4 +19,4 @@ I have containerized the app using **Docker**, and **Docker Compose** to manage 
 
 ## output
 
-![Output](/docker-compose-ouput.png)
+![Output](output_screenshots/docker-compose-ouput.png)
