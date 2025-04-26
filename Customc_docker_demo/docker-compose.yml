@@ -1,0 +1,9 @@
+
+services:
+  nginx:
+    build: .
+    image: srisatyap/nginx-custom:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./index.html:/var/opt/nginx
