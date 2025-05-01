@@ -2,25 +2,51 @@
 
 This project demonstrates how different namespaces in k8s network with each other by default and how to apply a "Network Policy" to  achieve namespace-level isolation.:smiley:
 ## Prerequisites
-- Minikube
-- Kubectl
-- Docker
+- Minikube 🚜
+- Kubectl 🧰
+- Docker 	🐳
 - CNI plugin that supports 'Network Policy'
-## Steps
-- start minikube
-- create namespaces
-- create one nginx pod in demo-namespace and expose using nginx-service in the same namespace
-- create a pod in another demo-namespace2 which uses a curl image and open it using interactive terminal
-- Try to curl into the nginx-service using cross-namespace dns (nginx-service.demo-namespace.svc.cluster.local)
-- Access the nginx-service :white_check_mark:
 
-## Isolation between Namespaces using Network Policy
+## Steps for default networking and  Isolation between Namespaces using Network Policy 	🔐
+- minikube start --cni=calico
+- kubectl create namespace team-alpha
+- kubectl create namespace team-beta
+- kubectl run nginx --image=nginx --restart=Never -n team-alpha
+- kubectl expose pod nginx --port=80 --target-port=80 --name=nginx-service -n team-alpha 🌐
+- kubectl run curlpod --image=alpine --restart=Never -it -n team-beta -- /bin/sh
+- inside the pod, curl nginx-service.team-alpha.svc.cluster.local ✅
+- Now, apply Network Policy using deny-external.yaml
+- kubectl label namespace team-alpha name=team-alpha
+- kubectl apply -f deny-external.yaml
+- 🔁 Re-test from team-beta
+- ❌ This time, the connection should fail — NetworkPolicy is blocking ingress from team-beta.
 
 
 
-### Notes
-- Namespaces in kubernetes by default follows flat design and they are able to communicate with one another as long as there are no specific network policies preventing access.
-- For instance, a pod in namespace1 (if exposed using a service)can communicate with another pod in namespace2.
-- So namespaces provides logical isolation and helps you group pods, services, deployments, configMaps, secrets.
-- Each namespace has its own DNS subdomain, which helps resolve service names within and across namespaces. ex: curl nginx-service (intra-namespace service) | curl nginx-service2.demo-namespace2.svc.cluster.local (cross-namespace access)
-- Isolation between namespaces can be achieved using Network Policies, using RBAC. Advanced CNI plugins can support namespace-level firewalls.
+📝 Notes
+🧱 Namespaces in Kubernetes follow a flat design and by default, they can communicate with each other unless blocked by a Network Policy 🔐.
+🔄 For example, a Pod in namespace1 (if exposed via a 🌐 Service) can be accessed by a Pod in namespace2.
+
+🗂️ Namespaces provide logical isolation and help you group related resources like:
+
+📦 Pods
+
+🌐 Services
+
+🚀 Deployments
+
+⚙️ ConfigMaps
+
+🔑 Secrets
+
+🌐 Each namespace has its own DNS subdomain, which enables service discovery:
+
+Intra-namespace access: curl nginx-service
+
+Cross-namespace access: curl nginx-service2.demo-namespace2.svc.cluster.local
+
+🚫 Isolation between namespaces can be achieved using:
+
+🔐 Network Policies
+
+🛡️ RBAC (Role-Based Access Control)
