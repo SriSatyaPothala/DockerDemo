@@ -1,6 +1,6 @@
 ## Kubernetes Namespace concepts using Minikube and Kubectl :fire:
 
-This project demonstrates how different namespaces in k8s network with each other by default and how to apply a "Network Policy" to  achieve namespace-level isolation.:smiley:
+This project demonstrates how different namespaces in k8s network with each other by default and how to apply a "Network Policy" to  achieve namespace-level isolation. :smiley:
 ## Prerequisites
 - Minikube 🚜
 - Kubectl 🧰
