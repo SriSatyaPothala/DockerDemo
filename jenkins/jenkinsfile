@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+
+    stages {
+    stage('Git Checkout'){
+            steps{
+                git url: 'https://github.com/SriSatyaPothala/DockerDemo.git', branch: 'main'
+            }
+        }
+    stage('Display Jenkins Backup Script') {
+            steps {
+                dir('jenkins') {
+                    sh 'cat jenkins_backup.sh'
+               }
+            }
+        }
+    }  
+    post {
+        always{
+            emailext(
+                subject: "🔔 Jenkins Build Notification: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: """\
+Hello,
+
+This is a notification that your Jenkins job has completed.
+Result: ${currentBuild.currentResult}
+
+Check the Jenkins job for more details. 
+""",
+                to: 'satyasreepothala114@gmail.com',
+                attachmentsPattern: 'jenkins/jenkins_backup.sh'
+            )
+        }
+    }
+}
