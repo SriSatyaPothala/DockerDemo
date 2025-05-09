@@ -27,7 +27,7 @@ Result: ${currentBuild.currentResult}
 
 Check the Jenkins job for more details. 
 """,
-                to: 'satyasreepothala114@gmail.com'
+                to: 'satyasreepothala114@gmail.com',
                 attachmentsPattern: 'jenkins/jenkins_backup.sh'
             )
         }
