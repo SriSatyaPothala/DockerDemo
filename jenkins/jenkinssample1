@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('git checkout'){
+        steps {
+        git branch: 'main', url: 'https://github.com/naveen23042000/CICD.git'
+      }
+    }
+        stage('Execute Script') {
+            steps {
+                sh 'chmod +x hello.sh'
+                sh './hello.sh'
+            }
+        }
+    }
+    post {
+        success {
+            emailext (
+                subject: "Pipeline Success: ${currentBuild.fullDisplayName}",
+                body: """/
+                    Build completed successfully!
+                    
+                    Build URL: ${env.BUILD_URL}
+                    Job Name: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                """,
+                to: 'satyasreepothala114@gmail.com',
+                attachLog: true
+            )
+        }
+        failure {
+            emailext (
+                subject: "Pipeline Failed: ${currentBuild.fullDisplayName}",
+                body: """/
+                    Build failed!
+                    
+                    Build URL: ${env.BUILD_URL}
+                    Job Name: ${env.JOB_NAME}
+                    Build Number: ${env.BUILD_NUMBER}
+                """,
+                to: 'satyasreepothala114@gmail.com',
+                attachLog: true
+            )
+        }
+    }
+}
